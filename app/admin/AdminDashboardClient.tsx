@@ -340,7 +340,9 @@ export default function AdminDashboardClient({
               <div className={styles.quotationsList}>
                 {orders.map((order) => {
                   const hasInsufficientStock = order.status === 'PENDING' && order.items.some(
-                    (item) => parseFloat(item.base_quantity) > parseFloat(products.find(p => p.id === item.product_id)?.stock_quantity?.toString() || '0')
+                    (item) =>
+  item.base_quantity >
+  Number(products.find(p => p.id === item.product_id)?.stock_quantity || 0)
                   );
 
                   const badgeClass = order.status === 'APPROVED'
@@ -404,7 +406,7 @@ export default function AdminDashboardClient({
                                         {item.ordered_quantity} {item.ordered_unit}
                                         {isCompatible ? ` × ${item.conversion_factor}` : ''}
                                         {` = `}
-                                        {parseFloat(item.base_quantity).toFixed(4)} {item.base_unit}
+                                        {item.base_quantity.toFixed(4)} {item.base_unit}
                                       </div>
                                       {isCompatible && (
                                         <div className={styles.conversionSteps}>
@@ -413,7 +415,7 @@ export default function AdminDashboardClient({
                                       )}
                                     </td>
                                     <td className={styles.auditTd}>
-                                      {parseFloat(item.base_quantity).toFixed(4)} {item.base_unit}
+                                      {Number(item.base_quantity).toFixed(4)} {item.base_unit}
                                     </td>
                                     <td className={styles.auditTd}>
                                       {formatINR(item.base_price)} / {item.base_unit}
